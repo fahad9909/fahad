@@ -53,8 +53,6 @@
     .export-btn { background: linear-gradient(135deg, #8e44ad, #9b59b6); color: white; }
     .pass-btn { background: linear-gradient(135deg, #2980b9, #3498db); color: white; }
 
-    .export-btn:hover { background: linear-gradient(135deg, #732d91, #8e44ad); }
-
     table {
       width: 100%;
       border-collapse: collapse;
@@ -136,10 +134,6 @@
       transition: all 0.3s ease;
     }
 
-    .notes-section:hover {
-      background: rgba(255,255,255,0.12);
-    }
-
     .notes-section h2 {
       color: #f1c40f;
       text-align: center;
@@ -165,6 +159,12 @@
     .notes-section textarea:focus {
       outline: 2px solid #f1c40f;
     }
+
+    .student-number {
+      font-weight: bold;
+      color: #f1c40f;
+      margin-right: 8px;
+    }
   </style>
 </head>
 <body>
@@ -181,6 +181,7 @@
   <table>
     <thead>
       <tr>
+        <th>#️⃣ الرقم</th>
         <th>👨‍🎓 اسم الطالب</th>
         <th>📝 اختبار (20)</th>
         <th>📖 اختبار الفترة (20)</th>
@@ -207,6 +208,7 @@
 
   <script>
     const DEFAULT_HASH = btoa("1234");
+    let studentCounter = 0;
 
     function getPasswordHash() {
       return localStorage.getItem("passwordHash") || DEFAULT_HASH;
@@ -229,8 +231,8 @@
     function addStudentRow() {
       const tbody = document.getElementById("studentsBody");
       const row = document.createElement("tr");
+      studentCounter++;
 
-      // دوال لتوليد الخيارات
       function createOptions(max) {
         let opts = "";
         for(let i=0; i<=max; i++) opts += `<option value="${i}">${i}</option>`;
@@ -238,6 +240,7 @@
       }
 
       row.innerHTML = `
+        <td class="student-number">${studentCounter}</td>
         <td><input type="text" placeholder="اسم الطالب"></td>
         <td><select>${createOptions(20)}</select></td>
         <td><select>${createOptions(20)}</select></td>
@@ -264,22 +267,17 @@
       const values = Array.from(row.querySelectorAll("select")).map(s => parseFloat(s.value)||0);
       const total = values.reduce((a,b)=>a+b,0);
       row.querySelector(".total").innerText = total;
-
       const divided = total / values.length;
       row.querySelector(".divided").innerText = divided.toFixed(2);
-
       row.querySelector(".afterDivided").innerText = divided.toFixed(2);
-
       const percentage = (total/70*100).toFixed(2);
       row.querySelector(".percentage").innerText = percentage + "%";
-
       const gradeCell = row.querySelector(".grade");
       if(percentage >= 90) gradeCell.innerText = "ممتاز"; 
       else if(percentage >= 80) gradeCell.innerText = "جيد جدًا"; 
       else if(percentage >= 70) gradeCell.innerText = "جيد"; 
       else if(percentage >= 60) gradeCell.innerText = "ناجح"; 
       else gradeCell.innerText = "ضعيف";
-
       row.classList.remove("excellent","vgood","good","pass","weak");
       if(percentage >= 90) row.classList.add("excellent");
       else if(percentage >= 80) row.classList.add("vgood");
@@ -288,15 +286,31 @@
       else row.classList.add("weak");
     }
 
-    function deleteRow(btn) { btn.closest("tr").remove(); }
+    function deleteRow(btn) {
+      btn.closest("tr").remove();
+      updateNumbers();
+    }
+
+    function updateNumbers() {
+      const rows = document.querySelectorAll("#studentsBody tr");
+      rows.forEach((row, index) => {
+        const numCell = row.querySelector(".student-number");
+        numCell.textContent = index + 1;
+      });
+      studentCounter = rows.length;
+    }
+
     function clearAllData() {
       if(confirm("🧹 هل أنت متأكد من مسح جميع البيانات؟")) {
         document.getElementById("studentsBody").innerHTML = "";
         document.getElementById("teacherNotes").value = "";
+        studentCounter = 0;
       }
     }
 
-    function exportToExcel() { alert("📤 ميزة التصدير متاحة قريبًا!"); }
+    function exportToExcel() {
+      alert("📤 ميزة التصدير إلى Excel ستتوفر قريبًا!");
+    }
   </script>
 
 </body>
@@ -321,4 +335,5 @@
 
 
    
+
 
