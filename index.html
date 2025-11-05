@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>🎓 سجل درجات الطلاب الفاخر</title>
+  <title>📘 سجل درجات الطلاب - نظام الفصول المتعددة</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
 
@@ -12,7 +12,7 @@
       background-size: 400% 400%;
       animation: gradientMove 12s ease infinite;
       color: #f4f4f4;
-      padding: 30px;
+      padding: 20px;
     }
 
     @keyframes gradientMove {
@@ -21,12 +21,37 @@
       100% { background-position: 0% 50%; }
     }
 
-    h1 {
-      text-align: center;
-      color: #f1c40f;
-      font-size: 34px;
+    .navbar {
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(6px);
+      padding: 12px 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 25px;
-      text-shadow: 0 0 15px rgba(241,196,15,0.7), 0 0 30px rgba(241,196,15,0.3);
+      position: sticky;
+      top: 10px;
+      z-index: 999;
+    }
+
+    .navbar h2 {
+      color: #f1c40f;
+      margin: 0;
+      font-size: 22px;
+      text-shadow: 0 0 10px rgba(241,196,15,0.6);
+    }
+
+    .navbar select {
+      font-family: 'Cairo', sans-serif;
+      font-size: 16px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: none;
+      background: rgba(255,255,255,0.9);
+      color: #2c3e50;
+      font-weight: 600;
     }
 
     .btn-container {
@@ -35,28 +60,27 @@
     }
 
     button {
-      padding: 12px 20px;
+      padding: 10px 18px;
       border: none;
       border-radius: 8px;
-      font-size: 16px;
+      font-size: 15px;
       cursor: pointer;
-      margin: 0 8px;
-      transition: all 0.4s ease;
+      margin: 0 6px;
+      transition: all 0.3s ease;
       font-weight: 600;
       box-shadow: 0 4px 15px rgba(0,0,0,0.25);
     }
 
-    button:hover { transform: scale(1.08); }
+    button:hover { transform: scale(1.07); }
 
     .add-btn { background: linear-gradient(135deg, #16a085, #1abc9c); color: white; }
     .clear-btn { background: linear-gradient(135deg, #f39c12, #e67e22); color: white; }
     .export-btn { background: linear-gradient(135deg, #8e44ad, #9b59b6); color: white; }
-    .pass-btn { background: linear-gradient(135deg, #2980b9, #3498db); color: white; }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(255,255,255,0.06);
       backdrop-filter: blur(5px);
       box-shadow: 0 8px 25px rgba(0,0,0,0.4);
       border-radius: 12px;
@@ -67,7 +91,6 @@
       padding: 10px;
       text-align: center;
       border-bottom: 1px solid rgba(255,255,255,0.1);
-      transition: all 0.3s ease;
     }
 
     th {
@@ -78,9 +101,9 @@
     }
 
     tr:nth-child(even) { background: rgba(255, 255, 255, 0.07); }
-    tr:hover { background: rgba(241, 196, 15, 0.15); transform: scale(1.01); }
+    tr:hover { background: rgba(241, 196, 15, 0.15); }
 
-    td select, td input {
+    td select, td input, td textarea {
       padding: 5px;
       font-size: 14px;
       border: 1px solid #aaa;
@@ -89,13 +112,16 @@
       color: #2c3e50;
       width: 100%;
       box-sizing: border-box;
-      transition: all 0.3s ease;
     }
 
-    .total, .divided, .percentage, .grade {
+    textarea {
+      resize: none;
+      height: 35px;
+    }
+
+    .total, .percentage, .grade {
       font-weight: bold;
       color: #f1c40f;
-      transition: all 0.3s ease;
     }
 
     .delete-btn {
@@ -105,10 +131,9 @@
       border-radius: 6px;
       padding: 6px 10px;
       cursor: pointer;
-      transition: 0.3s;
     }
 
-    .delete-btn:hover { transform: scale(1.1); background: linear-gradient(135deg, #a93226, #c0392b); }
+    .delete-btn:hover { background: linear-gradient(135deg, #a93226, #c0392b); transform: scale(1.1); }
 
     footer {
       margin-top: 40px;
@@ -118,199 +143,223 @@
       letter-spacing: 1px;
     }
 
-    .excellent { background: rgba(46, 204, 113, 0.25) !important; box-shadow: inset 0 0 10px rgba(46, 204, 113,0.3); }
-    .vgood { background: rgba(52, 152, 219, 0.25) !important; box-shadow: inset 0 0 10px rgba(52, 152, 219,0.3); }
-    .good { background: rgba(241, 196, 15, 0.25) !important; box-shadow: inset 0 0 10px rgba(241, 196, 15,0.3); }
-    .pass { background: rgba(230, 126, 34, 0.25) !important; box-shadow: inset 0 0 10px rgba(230, 126, 34,0.3); }
-    .weak { background: rgba(231, 76, 60, 0.3) !important; box-shadow: inset 0 0 10px rgba(231, 76, 60,0.3); }
+    .excellent { background: rgba(46, 204, 113, 0.25) !important; }
+    .vgood { background: rgba(52, 152, 219, 0.25) !important; }
+    .good { background: rgba(241, 196, 15, 0.25) !important; }
+    .pass { background: rgba(230, 126, 34, 0.25) !important; }
+    .weak { background: rgba(231, 76, 60, 0.3) !important; }
 
-    .notes-section {
-      margin-top: 40px;
+    .class-note {
+      margin-top: 25px;
       background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(8px);
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
-      transition: all 0.3s ease;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
 
-    .notes-section h2 {
+    .class-note h3 {
       color: #f1c40f;
-      text-align: center;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
       text-shadow: 0 0 10px rgba(241,196,15,0.5);
     }
 
-    .notes-section textarea {
+    .class-note textarea {
       width: 100%;
-      height: 120px;
-      border: none;
-      border-radius: 10px;
-      padding: 12px;
-      font-size: 16px;
-      font-family: 'Cairo', sans-serif;
+      height: 80px;
       resize: vertical;
-      background: rgba(255,255,255,0.9);
-      color: #2c3e50;
-      box-shadow: inset 0 3px 10px rgba(0,0,0,0.2);
-      transition: all 0.3s ease;
+      font-size: 15px;
     }
 
-    .notes-section textarea:focus {
-      outline: 2px solid #f1c40f;
-    }
-
-    .student-number {
-      font-weight: bold;
-      color: #f1c40f;
-      margin-right: 8px;
-    }
   </style>
 </head>
 <body>
 
-  <h1>📘✨ سجل درجات الطلاب ✨📘</h1>
+  <div class="navbar">
+    <h2>📚 سجل درجات الطلاب</h2>
+    <div>
+      <select id="stageSelect" onchange="switchStage()">
+        <option value="1">أول ثانوي</option>
+        <option value="2">ثاني ثانوي</option>
+        <option value="3">ثالث ثانوي</option>
+      </select>
+      <select id="classSelect" onchange="switchClass()">
+        <option value="1">الفصل 1</option>
+        <option value="2">الفصل 2</option>
+        <option value="3">الفصل 3</option>
+        <option value="4">الفصل 4</option>
+      </select>
+    </div>
+  </div>
 
   <div class="btn-container">
-    <button class="add-btn" onclick="addStudentRow()">➕ إضافة طالب جديد</button>
-    <button class="export-btn" onclick="exportToExcel()">📤 تصدير إلى Excel</button>
-    <button class="clear-btn" onclick="clearAllData()">🧹 مسح جميع البيانات</button>
-    <button class="pass-btn" onclick="changePassword()">🔑 تغيير كلمة المرور</button>
+    <button class="add-btn" onclick="addStudentRow()">➕ إضافة طالب</button>
+    <button class="clear-btn" onclick="clearAllData()">🧹 مسح البيانات</button>
+    <button class="export-btn" onclick="exportToExcel()">📤 تصدير</button>
   </div>
 
   <table>
     <thead>
       <tr>
-        <th>#️⃣ الرقم</th>
-        <th>👨‍🎓 اسم الطالب</th>
+        <th>#️⃣</th>
+        <th>👨‍🎓 الاسم</th>
         <th>📝 اختبار (20)</th>
         <th>📖 اختبار الفترة (20)</th>
         <th>📚 الواجبات (10)</th>
-        <th>🎯 النشاط الصفي (10)</th>
+        <th>🎯 النشاط (10)</th>
         <th>💬 المشاركة (10)</th>
         <th>📊 المجموع</th>
-        <th>➗ قسمة على</th>
-        <th>⚙️ بعد القسمة</th>
         <th>📈 النسبة %</th>
         <th>🏅 التقدير</th>
+        <th>🗒️ الملاحظات</th>
         <th>🗑️ حذف</th>
       </tr>
     </thead>
     <tbody id="studentsBody"></tbody>
   </table>
 
-  <div class="notes-section">
-    <h2>📝 ملاحظات المعلم</h2>
-    <textarea id="teacherNotes" placeholder="اكتب ملاحظاتك هنا..."></textarea>
+  <!-- 🔹 ملاحظات الفصل -->
+  <div class="class-note">
+    <h3>🗒️ ملاحظات الفصل</h3>
+    <textarea id="classNote" placeholder="اكتب ملاحظات عامة عن الفصل..."></textarea>
   </div>
 
   <footer>🌟 جميع الحقوق محفوظة © 2025 🌟</footer>
 
   <script>
-    const DEFAULT_HASH = btoa("1234");
     let studentCounter = 0;
+    let currentStage = "1";
+    let currentClass = "1";
+    let allData = JSON.parse(localStorage.getItem("gradesData") || "{}");
 
-    function getPasswordHash() {
-      return localStorage.getItem("passwordHash") || DEFAULT_HASH;
+    function key() {
+      return `stage${currentStage}_class${currentClass}`;
     }
 
-    window.onload = function() {
-      const storedHash = getPasswordHash();
-      const userPass = prompt("🔐 أدخل كلمة المرور للوصول إلى السجل:");
-      if(btoa(userPass) !== storedHash) {
-        alert("❌ كلمة المرور خاطئة!");
-        document.body.innerHTML = "<h1 style='text-align:center;margin-top:50px;color:red;'>🚫 وصول مرفوض 🚫</h1>";
-      }
-    };
+    function saveCurrentData() {
+      const rows = Array.from(document.querySelectorAll("#studentsBody tr")).map(r => {
+        const name = r.querySelector("input").value;
+        const scores = Array.from(r.querySelectorAll("select")).map(s=>s.value);
+        const note = r.querySelector("textarea").value;
+        return { name, scores, note };
+      });
+      const classNote = document.getElementById("classNote").value;
+      allData[key()] = { rows, classNote };
+      localStorage.setItem("gradesData", JSON.stringify(allData));
+    }
 
-    function changePassword() {
-      const newPass = prompt("🔑 أدخل كلمة المرور الجديدة:");
-      if(newPass) localStorage.setItem("passwordHash", btoa(newPass));
+    function loadData() {
+      const tbody = document.getElementById("studentsBody");
+      tbody.innerHTML = "";
+      const data = allData[key()] || { rows: [], classNote: "" };
+      const rows = data.rows || [];
+      studentCounter = 0;
+      rows.forEach(r => {
+        addStudentRow();
+        const tr = tbody.lastElementChild;
+        tr.querySelector("input").value = r.name;
+        const selects = tr.querySelectorAll("select");
+        r.scores.forEach((v,i)=>selects[i].value=v);
+        tr.querySelector("textarea").value = r.note || "";
+        calculateRow(tr);
+      });
+      document.getElementById("classNote").value = data.classNote || "";
     }
 
     function addStudentRow() {
       const tbody = document.getElementById("studentsBody");
       const row = document.createElement("tr");
       studentCounter++;
-
-      function createOptions(max) {
-        let opts = "";
-        for(let i=0; i<=max; i++) opts += `<option value="${i}">${i}</option>`;
-        return opts;
-      }
-
       row.innerHTML = `
-        <td class="student-number">${studentCounter}</td>
+        <td>${studentCounter}</td>
         <td><input type="text" placeholder="اسم الطالب"></td>
-        <td><select>${createOptions(20)}</select></td>
-        <td><select>${createOptions(20)}</select></td>
-        <td><select>${createOptions(10)}</select></td>
-        <td><select>${createOptions(10)}</select></td>
-        <td><select>${createOptions(10)}</select></td>
+        <td><select>${opts(20)}</select></td>
+        <td><select>${opts(20)}</select></td>
+        <td><select>${opts(10)}</select></td>
+        <td><select>${opts(10)}</select></td>
+        <td><select>${opts(10)}</select></td>
         <td class="total">0</td>
-        <td class="divided">0</td>
-        <td class="afterDivided">0</td>
         <td class="percentage">0%</td>
         <td class="grade"></td>
+        <td><textarea placeholder="ملاحظات..."></textarea></td>
         <td><button class="delete-btn" onclick="deleteRow(this)">🗑️</button></td>
       `;
       tbody.appendChild(row);
-      attachInputListeners(row);
+      row.querySelectorAll("select, input, textarea").forEach(el => el.addEventListener("change", () => {
+        calculateRow(row);
+        saveCurrentData();
+      }));
     }
 
-    function attachInputListeners(row) {
-      const selects = row.querySelectorAll("select");
-      selects.forEach(sel => sel.addEventListener("change", () => calculateRow(row)));
+    document.getElementById("classNote").addEventListener("input", saveCurrentData);
+
+    function opts(max) {
+      let o = "";
+      for(let i=0;i<=max;i++) o += `<option value="${i}">${i}</option>`;
+      return o;
     }
 
     function calculateRow(row) {
-      const values = Array.from(row.querySelectorAll("select")).map(s => parseFloat(s.value)||0);
-      const total = values.reduce((a,b)=>a+b,0);
+      const vals = Array.from(row.querySelectorAll("select")).map(s=>+s.value||0);
+      const total = vals.reduce((a,b)=>a+b,0);
+      const perc = (total/70*100).toFixed(2);
       row.querySelector(".total").innerText = total;
-      const divided = total / values.length;
-      row.querySelector(".divided").innerText = divided.toFixed(2);
-      row.querySelector(".afterDivided").innerText = divided.toFixed(2);
-      const percentage = (total/70*100).toFixed(2);
-      row.querySelector(".percentage").innerText = percentage + "%";
-      const gradeCell = row.querySelector(".grade");
-      if(percentage >= 90) gradeCell.innerText = "ممتاز"; 
-      else if(percentage >= 80) gradeCell.innerText = "جيد جدًا"; 
-      else if(percentage >= 70) gradeCell.innerText = "جيد"; 
-      else if(percentage >= 60) gradeCell.innerText = "ناجح"; 
-      else gradeCell.innerText = "ضعيف";
-      row.classList.remove("excellent","vgood","good","pass","weak");
-      if(percentage >= 90) row.classList.add("excellent");
-      else if(percentage >= 80) row.classList.add("vgood");
-      else if(percentage >= 70) row.classList.add("good");
-      else if(percentage >= 60) row.classList.add("pass");
+      row.querySelector(".percentage").innerText = perc+"%";
+      const grade = row.querySelector(".grade");
+      if(perc>=90) grade.innerText="ممتاز";
+      else if(perc>=80) grade.innerText="جيد جدًا";
+      else if(perc>=70) grade.innerText="جيد";
+      else if(perc>=60) grade.innerText="ناجح";
+      else grade.innerText="ضعيف";
+      row.className = "";
+      if(perc>=90) row.classList.add("excellent");
+      else if(perc>=80) row.classList.add("vgood");
+      else if(perc>=70) row.classList.add("good");
+      else if(perc>=60) row.classList.add("pass");
       else row.classList.add("weak");
     }
 
     function deleteRow(btn) {
       btn.closest("tr").remove();
       updateNumbers();
+      saveCurrentData();
     }
 
     function updateNumbers() {
       const rows = document.querySelectorAll("#studentsBody tr");
-      rows.forEach((row, index) => {
-        const numCell = row.querySelector(".student-number");
-        numCell.textContent = index + 1;
-      });
+      rows.forEach((r,i)=>r.children[0].innerText = i+1);
       studentCounter = rows.length;
     }
 
     function clearAllData() {
-      if(confirm("🧹 هل أنت متأكد من مسح جميع البيانات؟")) {
+      if(confirm("هل أنت متأكد من مسح جميع بيانات هذا الفصل؟")) {
         document.getElementById("studentsBody").innerHTML = "";
-        document.getElementById("teacherNotes").value = "";
+        document.getElementById("classNote").value = "";
         studentCounter = 0;
+        allData[key()] = { rows: [], classNote: "" };
+        localStorage.setItem("gradesData", JSON.stringify(allData));
       }
     }
 
     function exportToExcel() {
       alert("📤 ميزة التصدير إلى Excel ستتوفر قريبًا!");
     }
+
+    function switchStage() {
+      saveCurrentData();
+      currentStage = document.getElementById("stageSelect").value;
+      currentClass = "1";
+      document.getElementById("classSelect").value = "1";
+      loadData();
+    }
+
+    function switchClass() {
+      saveCurrentData();
+      currentClass = document.getElementById("classSelect").value;
+      loadData();
+    }
+
+    window.addEventListener("beforeunload", saveCurrentData);
+    loadData();
   </script>
 
 </body>
@@ -335,5 +384,6 @@
 
 
    
+
 
 
